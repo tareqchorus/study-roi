@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en" data-chorus-v4 data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus Study ROI</title>
+<meta name="description" content="What a Chorus study and subscription are worth to a nonprofit program, with a calculator and the ranges seen across Chorus client studies." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ Chorus design system v1.0.1 tokens ============ */
+[data-chorus-v4]{
+  --v4-primary:#7c3aed; --v4-primary-alt:#a78bfa; --v4-primary-hover:#8b46f0; --v4-primary-active:#6d28d9;
+  --v4-brand-gradient:linear-gradient(135deg,#7c3aed,#a78bfa);
+  --v4-bg:#0a0a0a; --v4-surface:#111111; --v4-surface-2:#161616; --v4-border:#222222; --v4-border-soft:#1f1f1f;
+  --v4-text-1:#ffffff; --v4-text-2:rgba(255,255,255,.65); --v4-text-3:rgba(255,255,255,.45); --v4-text-4:rgba(255,255,255,.28);
+  --v4-state-success:#38c793; --v4-state-warning:#f17b2c; --v4-state-error:#df1c41; --v4-state-info:#375dfb;
+  --v4-state-warning-bg:rgba(241,123,44,.10); --v4-state-error-bg:rgba(223,28,65,.10);
+  --v4-purple-12:rgba(124,58,237,.12); --v4-purple-15:rgba(124,58,237,.15); --v4-purple-20:rgba(124,58,237,.2); --v4-purple-25:rgba(124,58,237,.25); --v4-purple-60:rgba(124,58,237,.6);
+  --v4-shadow-input-focus:0 0 0 4px rgba(124,58,237,.18);
+  --grid:rgba(255,255,255,.08); --neutral:rgba(255,255,255,.30); --accent:#a78bfa;
+}
+[data-chorus-v4][data-theme='light']{
+  --v4-bg:#ffffff; --v4-surface:#f5f5f5; --v4-surface-2:#fafafa; --v4-border:#e5e5e5; --v4-border-soft:#ececec;
+  --v4-text-1:#0a0a0a; --v4-text-2:rgba(10,10,10,.7); --v4-text-3:rgba(10,10,10,.5); --v4-text-4:rgba(10,10,10,.32);
+  --grid:rgba(10,10,10,.09); --neutral:rgba(10,10,10,.34); --accent:#6d28d9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--v4-bg);color:var(--v4-text-1);font-family:'Geist','Geist Sans',ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 16px}}
+a{color:var(--accent)}
+header.top{border-bottom:1px solid var(--v4-border);position:sticky;top:0;background:color-mix(in srgb,var(--v4-bg) 88%,transparent);z-index:20;backdrop-filter:blur(8px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;letter-spacing:-.01em;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--v4-brand-gradient);box-shadow:0 0 10px rgba(124,58,237,.55)}
+.nav{display:flex;gap:4px;margin-left:26px;margin-right:auto;overflow-x:auto;scrollbar-width:none}
+.nav a{font-size:13px;font-weight:500;color:var(--v4-text-2);text-decoration:none;padding:6px 12px;border-radius:8px;white-space:nowrap}
+.nav a:hover{color:var(--v4-text-1);background:var(--v4-purple-12)}
+@media(max-width:820px){.nav{display:none}}
+.toggle{font:inherit;font-size:12px;color:var(--v4-text-2);background:var(--v4-surface);border:1px solid var(--v4-border);border-radius:8px;padding:6px 12px;cursor:pointer}
+.toggle:hover{color:var(--v4-text-1);border-color:var(--accent)}
+
+.hero{padding:60px 0 36px;border-bottom:1px solid var(--v4-border)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(30px,4.6vw,50px);font-weight:600;letter-spacing:-.03em;line-height:1.04;margin:16px 0 16px;max-width:20ch}
+.hero .lede{font-size:16.5px;color:var(--v4-text-2);max-width:66ch;line-height:1.6}
+.strip{display:flex;flex-wrap:wrap;margin-top:32px;border:1px solid var(--v4-border);border-radius:14px;overflow:hidden;background:var(--v4-surface)}
+.strip .cell{flex:1 1 170px;padding:18px 20px;border-right:1px solid var(--v4-border)}
+.strip .cell:last-child{border-right:0}
+.strip .cell.main{flex:2 1 260px}
+.strip .n{font-size:25px;font-weight:600;letter-spacing:-.02em}
+.strip .cell.main .n{font-size:32px;color:var(--accent)}
+.strip .k{font-size:12px;color:var(--v4-text-3);margin-top:4px;line-height:1.4}
+@media(max-width:700px){.strip .cell{border-right:0;border-bottom:1px solid var(--v4-border)}.strip .cell:last-child{border-bottom:0}}
+
+section.job{padding:48px 0 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.sec-num{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.1em}
+.sec-head h2{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.sec-sub{color:var(--v4-text-3);font-size:14px;margin:0 0 24px;max-width:70ch;line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid .span2{grid-column:1 / -1}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--v4-surface);border:1px solid var(--v4-border);border-radius:16px;padding:20px 22px}
+.panel h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:3px}
+.panel .cap{font-size:12.5px;color:var(--v4-text-3);margin-bottom:12px;line-height:1.5}
+.btn{font:inherit;font-size:12.5px;font-weight:500;color:var(--v4-text-2);background:var(--v4-surface-2);border:1px solid var(--v4-border);border-radius:8px;padding:7px 14px;cursor:pointer;margin-top:14px}
+.btn:hover{color:var(--v4-text-1);border-color:var(--accent)}
+
+/* inputs */
+.r{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--v4-border-soft);font-size:13.5px}
+.r:first-of-type{border-top:1px solid var(--v4-border-soft)}
+.r .lab{flex:1;color:var(--v4-text-2);line-height:1.35;min-width:0}
+.r .lab .src{display:block;font-size:11px;color:var(--v4-text-4)}
+.pin{display:flex;align-items:center;gap:4px;background:var(--v4-surface-2);border:1px solid var(--v4-border);border-radius:7px;padding:0 8px;width:136px;flex:none}
+.pin.s{width:92px}
+.pin span{font-size:13px;color:var(--v4-text-3)}
+.pin input{font:inherit;font-size:13.5px;font-weight:500;color:var(--v4-text-1);background:transparent;border:0;padding:6px 0;width:100%;min-width:0;text-align:right;font-variant-numeric:tabular-nums}
+.pin input:focus{outline:none}
+.pin:focus-within{border-color:var(--v4-purple-60);box-shadow:var(--v4-shadow-input-focus)}
+@media(max-width:520px){.pin{width:120px}.pin.s{width:84px}}
+
+/* result table */
+.btable{width:100%;border-collapse:collapse;font-size:13.5px}
+.btable td{padding:10px 0;border-bottom:1px solid var(--v4-border-soft);vertical-align:middle}
+.btable td.lab{color:var(--v4-text-2)}
+.btable td.lab .src{display:block;font-size:11px;color:var(--v4-text-4)}
+.btable td.v{text-align:right;padding-left:18px;white-space:nowrap;width:1%;font-weight:600}
+.btable td.v.lo{color:var(--v4-text-2);font-weight:500}
+.btable td.hd{text-align:right;padding:6px 0 6px 18px;white-space:nowrap;width:1%;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--v4-text-4)}
+.btable tr.tot td{font-weight:600;color:var(--v4-text-1);border-bottom:1px solid var(--v4-border)}
+.btable tr.tot td.v{color:var(--accent);font-size:16px}
+.btable tr.sub td{color:var(--v4-text-3)}
+.btable tr.ret td{border-bottom:0;padding-top:14px}
+.btable tr.ret td.v{font-size:20px;color:var(--accent);letter-spacing:-.02em}
+.btable td.v.neg{color:var(--v4-state-error)}
+
+details.adv{border:1px solid var(--v4-border);border-radius:16px;background:var(--v4-surface);margin-top:18px}
+details.adv summary{font-size:13.5px;color:var(--v4-text-2);cursor:pointer;font-weight:500;padding:14px 22px;list-style:none}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv summary:before{content:"▸";display:inline-block;margin-right:8px;font-size:11px;transition:transform .15s}
+details.adv[open] summary:before{transform:rotate(90deg)}
+details.adv summary:hover{color:var(--accent)}
+.advgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 26px;padding:4px 22px 20px}
+@media(max-width:860px){.advgrid{grid-template-columns:1fr}}
+.advgrid h4{font-size:12px;font-weight:600;color:var(--accent);margin:6px 0 2px}
+.advgrid .r:first-of-type{border-top:0}
+.fullval{padding:0 22px 18px;font-size:12.5px;color:var(--v4-text-3)}
+
+.note{border:1px solid var(--v4-border);border-radius:14px;background:var(--v4-surface);padding:16px 20px;margin-top:18px;font-size:13.5px;color:var(--v4-text-2);line-height:1.6}
+.note b{color:var(--v4-text-1)}
+.note p+p{margin-top:6px}
+.note.accent{border-color:var(--v4-purple-25);background:var(--v4-purple-12)}
+.note .big{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;color:var(--accent);margin:4px 0 2px}
+
+/* calculator (hero) */
+.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--v4-border);border-radius:16px;overflow:hidden;margin-top:32px;background:var(--v4-bg)}
+@media(max-width:900px){.calc{grid-template-columns:1fr}}
+.calc .inputs{padding:24px 24px 20px;border-right:1px solid var(--v4-border)}
+@media(max-width:900px){.calc .inputs{border-right:0;border-bottom:1px solid var(--v4-border)}}
+.calc h2{font-size:18px;font-weight:600;letter-spacing:-.02em}
+.calc .cap{font-size:13px;color:var(--v4-text-3);margin:4px 0 14px;line-height:1.5}
+.field{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid var(--v4-border-soft)}
+.field label{font-size:13.5px;color:var(--v4-text-2);line-height:1.35}
+.field label small{display:block;font-size:11px;color:var(--v4-text-4)}
+.linkbtn{margin-top:12px;font:inherit;font-size:12.5px;color:var(--v4-text-3);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+.linkbtn:hover{color:var(--accent)}
+.results{padding:24px 26px 22px;background:var(--v4-surface)}
+.ret-label{font-size:13.5px;color:var(--v4-text-2)}
+.ret{font-size:clamp(44px,6.5vw,68px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:6px 0 8px;color:var(--accent)}
+.ret-line{font-size:14.5px;color:var(--v4-text-2)}
+.pbars{margin:20px 0 4px;display:flex;flex-direction:column;gap:12px}
+.pb .pl{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px}
+.pb .pl b{font-weight:600}
+.pb .pl span{color:var(--v4-text-3)}
+.trk{height:12px;border-radius:6px;background:var(--grid);overflow:hidden}
+.fill{height:100%;border-radius:6px;transition:width .35s ease}
+.fill.cost{background:var(--neutral)}
+.fill.lo{background:var(--v4-primary-alt)}
+.fill.hi{background:var(--v4-primary)}
+.net{margin-top:14px;font-size:13.5px;color:var(--v4-text-2)}
+.net b{color:var(--v4-text-1)}
+.breakdown{margin-top:18px;border-top:1px solid var(--v4-border)}
+.bd{display:grid;grid-template-columns:1fr auto;gap:3px 14px;padding:9px 0;border-bottom:1px solid var(--v4-border-soft);font-size:13.5px;align-items:center}
+.bd .nm{color:var(--v4-text-2)}
+.bd .nm small{display:block;font-size:11px;color:var(--v4-text-4)}
+.bd .v{font-weight:600;text-align:right;white-space:nowrap}
+.bd .mini{grid-column:1/-1;height:5px;border-radius:3px;background:var(--grid);overflow:hidden}
+.bd .mini i{display:block;height:100%;background:var(--v4-primary);border-radius:3px;transition:width .35s ease}
+.bd.neg .v{color:var(--v4-state-error)}
+.fine{font-size:12px;color:var(--v4-text-3);margin-top:10px;line-height:1.5}
+@media(prefers-reduced-motion:reduce){.fill,.bd .mini i{transition:none}}
+
+/* studies table */
+.stable{width:100%;border-collapse:collapse;font-size:14px}
+.stable th{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--v4-text-4);text-align:left;padding:4px 18px 10px 0;border-bottom:1px solid var(--v4-border)}
+.stable td{padding:18px 18px 18px 0;border-bottom:0;vertical-align:top;color:var(--v4-text-2);line-height:1.45}
+.stable tr:last-child td{border-bottom:0}
+.stable td.org{color:var(--v4-text-1);font-weight:600;font-size:15px;width:26%}
+.stable td.org .tag{display:block;width:max-content;font-size:11px;font-weight:600;color:var(--accent);background:var(--v4-purple-12);border:1px solid var(--v4-purple-20);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.stable tbody tr+tr td{border-top:1px solid var(--v4-border)}
+.stable td.lift{width:24%}
+.stable td.lift b{display:block;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--accent);line-height:1.15}
+.stable td.lift span{font-size:12px;color:var(--v4-text-3)}
+.stable td.val{white-space:nowrap;color:var(--v4-text-1);font-weight:500;width:18%}
+@media(max-width:760px){
+  .stable thead{display:none}
+  .stable tr{display:block;padding:14px 0;border-bottom:1px solid var(--v4-border-soft)}
+  .stable tr:last-child{border-bottom:0}
+  .stable td{display:block;width:auto!important;padding:2px 0;border:0}
+}
+
+/* cards */
+.card{background:var(--v4-surface);border:1px solid var(--v4-border);border-radius:16px;padding:20px 22px 18px;display:flex;flex-direction:column;min-width:0}
+.chip{display:inline-flex;align-items:center;align-self:flex-start;font-size:11px;font-weight:600;color:var(--accent);background:var(--v4-purple-12);border:1px solid var(--v4-purple-20);border-radius:6px;padding:2px 8px;margin-bottom:10px}
+.chip.test{color:var(--v4-state-warning);background:var(--v4-state-warning-bg);border-color:rgba(241,123,44,.3)}
+.card h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.3;margin-bottom:12px}
+.stat{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.stat b{font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1;color:var(--accent)}
+.stat span{font-size:13px;color:var(--v4-text-2);line-height:1.4;max-width:34ch}
+.seenat{font-size:11.5px;color:var(--v4-text-4);margin-top:6px}
+.card ul{list-style:none;margin-top:14px;border-top:1px solid var(--v4-border-soft)}
+.card li{font-size:13.5px;color:var(--v4-text-2);line-height:1.55;padding:9px 0 9px 16px;border-bottom:1px solid var(--v4-border-soft);position:relative}
+.card li:last-child{border-bottom:0;padding-bottom:0}
+.card li:before{content:"";position:absolute;left:1px;top:17px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+/* small charts */
+.bars{display:flex;flex-direction:column;gap:7px;margin-top:16px}
+.bars .br{display:grid;grid-template-columns:150px minmax(0,1fr) 70px;gap:10px;align-items:center;font-size:12.5px;color:var(--v4-text-2)}
+@media(max-width:520px){.bars .br{grid-template-columns:110px minmax(0,1fr) 64px}}
+.bars .tk{height:10px;border-radius:5px;background:var(--grid);overflow:hidden}
+.bars .tk i{display:block;height:100%;border-radius:5px;background:var(--v4-primary)}
+.bars .tk i.g{background:var(--neutral)}
+.bars .bv{text-align:right;font-weight:600;color:var(--v4-text-1)}
+.split{display:flex;height:26px;border-radius:7px;overflow:hidden;margin-top:16px;font-size:12px;font-weight:500}
+.split div{display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden}
+.split .a{background:var(--v4-primary);color:#fff}
+.split .b{background:var(--grid);color:var(--v4-text-3)}
+.chartcap{font-size:11.5px;color:var(--v4-text-4);margin-top:6px}
+
+/* depends list */
+.dlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+@media(max-width:760px){.dlist{grid-template-columns:1fr}}
+.dlist div{display:grid;grid-template-columns:148px minmax(0,1fr);gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--v4-border-soft)}
+.dlist b{font-size:20px;font-weight:600;letter-spacing:-.02em;color:var(--accent)}
+.dlist p{font-size:13.5px;color:var(--v4-text-2);line-height:1.45}
+.dlist p em{display:block;font-style:normal;font-size:11.5px;color:var(--v4-text-4);margin-top:3px}
+
+/* interventions */
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 22px;margin-top:4px;font-size:13.5px;color:var(--v4-text-2);line-height:1.55}
+.meta b{display:block;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--v4-text-4);margin-bottom:3px}
+@media(max-width:620px){.meta{grid-template-columns:1fr}}
+.iv-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+.iv-top h3{margin-bottom:2px}
+.iv-top .alt{font-size:13px;color:var(--v4-text-3);max-width:60ch}
+.live{text-align:right}
+@media(max-width:620px){.live{text-align:left}}
+.live small{display:block;font-size:11px;color:var(--v4-text-4)}
+.live strong{font-size:20px;font-weight:600;letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
+table.uv{width:100%;max-width:420px;border-collapse:collapse;margin-top:6px;font-size:13px}
+table.uv th{font-weight:500;color:var(--v4-text-3);text-align:right;padding:4px 0;border-bottom:1px solid var(--v4-border)}
+table.uv th:first-child,table.uv td:first-child{text-align:left}
+table.uv td{padding:6px 0;border-bottom:1px solid var(--v4-border-soft);text-align:right;font-weight:500;color:var(--v4-text-1)}
+
+/* interventions (two-column) */
+.ivs{display:flex;flex-direction:column;gap:18px}
+.iv{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--v4-border);border-radius:16px;overflow:hidden;background:var(--v4-bg)}
+@media(max-width:860px){.iv{grid-template-columns:1fr}}
+.iv .vis{background:var(--v4-surface);padding:22px 22px 20px;border-right:1px solid var(--v4-border)}
+@media(max-width:860px){.iv .vis{border-right:0;border-bottom:1px solid var(--v4-border)}}
+.iv .vis h3{font-size:18px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.iv .vis .alt{font-size:13.5px;color:var(--v4-text-2);margin-top:4px;line-height:1.5}
+.iv .vis .live{margin-top:18px;font-size:12px;color:var(--v4-text-3)}
+.iv .vis .live strong{display:block;margin-top:2px;font-size:20px;font-weight:600;letter-spacing:-.02em;color:var(--accent)}
+.iv .txt{padding:20px 24px}
+.iv dl{display:grid;grid-template-columns:150px minmax(0,1fr)}
+@media(max-width:560px){.iv dl{grid-template-columns:1fr}}
+.iv dt{font-size:13px;font-weight:600;padding:11px 14px 11px 0;border-bottom:1px solid var(--v4-border-soft)}
+.iv dd{font-size:13.5px;color:var(--v4-text-2);line-height:1.55;padding:11px 0;border-bottom:1px solid var(--v4-border-soft)}
+.iv dl>*:nth-last-child(-n+2){border-bottom:0}
+@media(max-width:560px){.iv dt{border-bottom:0;padding-bottom:2px}.iv dd{padding-top:0}}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:11px;font-weight:500;color:var(--accent);background:var(--v4-purple-12);border:1px solid var(--v4-purple-20);border-radius:6px;padding:2px 8px}
+.funnel{display:flex;flex-direction:column;gap:7px;margin-top:16px}
+.funnel .fs{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--v4-text-2)}
+.funnel .fb{height:24px;border-radius:6px;background:var(--v4-purple-15);display:flex;align-items:center;padding:0 10px;font-weight:600;color:var(--accent);min-width:58px;transition:width .35s ease}
+.funnel .fs:last-child .fb{background:var(--v4-primary);color:#fff}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media(max-width:800px){.steps{grid-template-columns:1fr}}
+.steps .card h3{margin-bottom:6px}
+.steps .card p{font-size:13.5px;color:var(--v4-text-2);line-height:1.55}
+
+footer{border-top:1px solid var(--v4-border);margin-top:56px;padding:26px 0 56px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;flex-wrap:wrap}
+footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch}
+.cta{display:inline-flex;align-items:center;height:44px;padding:0 24px;border-radius:12px;background:var(--v4-primary);color:#fff;font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap}
+.cta:hover{background:var(--v4-primary-hover)}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.cta.ghost{font:inherit;font-size:15px;font-weight:500;background:var(--v4-surface);color:var(--v4-text-1);border:1px solid var(--v4-border);cursor:pointer}
+.cta.ghost:hover{background:var(--v4-surface);border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{header.top,details.adv{display:none}.card,.panel{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><span class="dot"></span> Chorus</div>
+  <nav class="nav" aria-label="Sections">
+    <a href="#calculator">Calculator</a><a href="#seen">Our studies</a><a href="#patterns">Patterns</a><a href="#interventions">Interventions</a><a href="#how">How it works</a>
+  </nav>
+  <button class="toggle" id="themeBtn" type="button">◐ Dark</button>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Audience Intelligence Study · ROI</div>
+  <h1>Raise more money. Engage more supporters.</h1>
+  <p class="lede">Typical models can't see the content you send. Chorus measures every open, click, gift, and unsubscribe against the content behind it, and predicts how each supporter will react to the specific message you're about to send. Enter your program's numbers to see what that is worth.</p>
+  <div class="calc" id="calculator">
+    <div class="inputs">
+      <h2>Your program</h2>
+      <p class="cap">The calculator opens on an example program. Replace each number with yours.</p>
+      <div class="field"><label for="i-email">Supporters emailed in a typical month<small>Unique people, not total sends</small></label><span class="pin"><input id="i-email" data-k="email" inputmode="decimal"></span></div>
+      <div class="field"><label for="i-sms">Supporters texted in a typical month</label><span class="pin"><input id="i-sms" data-k="sms" inputmode="decimal"></span></div>
+      <div class="field"><label for="i-overlap">Texted supporters also on your email list</label><span class="pin s"><input id="i-overlap" data-k="overlap" inputmode="decimal"><span>%</span></span></div>
+      <div class="field"><label for="i-revEmail">Email fundraising revenue per year</label><span class="pin"><span>$</span><input id="i-revEmail" data-k="revEmail" inputmode="decimal"></span></div>
+      <div class="field"><label for="i-revSms">SMS fundraising revenue per year</label><span class="pin"><span>$</span><input id="i-revSms" data-k="revSms" inputmode="decimal"></span></div>
+      <div class="field"><label for="i-sust">Active sustainers</label><span class="pin"><input id="i-sust" data-k="sust" inputmode="decimal"></span></div>
+      <div class="field"><label for="i-gift">Average sustainer gift per month</label><span class="pin s"><span>$</span><input id="i-gift" data-k="gift" inputmode="decimal"></span></div>
+      <button class="linkbtn" type="button" id="reset">Reset to the example program</button>
+    </div>
+    <div class="results" aria-live="polite">
+      <div class="ret-label">Return on Chorus, per year</div>
+      <div class="ret" id="roi"></div>
+      <p class="ret-line" id="roiLine"></p>
+      <div class="pbars">
+        <div class="pb"><div class="pl"><b>Chorus Orchestrate</b><span id="costL"></span></div><div class="trk"><div class="fill cost" id="costB"></div></div></div>
+        <div class="pb"><div class="pl"><b>Value if you capture 25%</b><span id="loL"></span></div><div class="trk"><div class="fill lo" id="loB"></div></div></div>
+        <div class="pb"><div class="pl"><b>Value if you capture 50%</b><span id="hiL"></span></div><div class="trk"><div class="fill hi" id="hiB"></div></div></div>
+      </div>
+      <p class="net" id="net"></p>
+      <div class="breakdown">
+        <div class="bd" id="bd-topic"><span class="nm">Topic routing</span><span class="v"></span><span class="mini"><i></i></span></div>
+        <div class="bd" id="bd-emailSup"><span class="nm">Strategic suppression, email</span><span class="v"></span><span class="mini"><i></i></span></div>
+        <div class="bd" id="bd-smsSup"><span class="nm">Strategic suppression, SMS<small id="smsSrc"></small></span><span class="v"></span><span class="mini"><i></i></span></div>
+        <div class="bd" id="bd-sust"><span class="nm">Sustainer saves</span><span class="v"></span><span class="mini"><i></i></span></div>
+      </div>
+      <p class="fine" id="costNote"></p>
+    </div>
+  </div>
+  <div class="note">
+    <p><b>How we count this.</b> We assume you capture 25% to 50% of the value we calculate. Some of the gap is operational, since teams roll changes out over months. Some reflects that program and mission goals can matter more than immediate revenue or list health. Figures are an annual run rate once the interventions are live; year one runs lower while the pilot is in market.</p>
+    <p><b>Not included: direct mail.</b> Strategic suppression works the same way in direct mail, and each piece not sent saves printing and postage. We left it out of this calculator.</p>
+  </div>
+  <details class="adv">
+    <summary>Advanced: change the assumptions</summary>
+    <div class="advgrid">
+      <div>
+        <h4>Topic routing</h4>
+        <div class="r"><span class="lab">Lift on fundraising at full rollout<span class="src">19% to 62% of email fundraising in our two donor studies; we start low and apply it to SMS too</span></span><span class="pin s"><input data-k="topicLift" inputmode="decimal" aria-label="Topic routing lift"><span>%</span></span></div>
+        <h4>Sustainers</h4>
+        <div class="r"><span class="lab">Sustainers who stop each year<span class="src">18.5% and 32% in our donor studies</span></span><span class="pin s"><input data-k="stopRate" inputmode="decimal" aria-label="Sustainers who stop each year"><span>%</span></span></div>
+        <div class="r"><span class="lab">Stops flagged ahead<span class="src">Measured: 34%</span></span><span class="pin s"><input data-k="flagged" inputmode="decimal" aria-label="Stops flagged ahead"><span>%</span></span></div>
+        <div class="r"><span class="lab">Flagged sustainers saved<span class="src">Not yet measured</span></span><span class="pin s"><input data-k="saveRate" inputmode="decimal" aria-label="Flagged sustainers saved"><span>%</span></span></div>
+        <div class="r"><span class="lab">Months of gifts a save adds<span class="src">17 and 19 in our donor studies</span></span><span class="pin s"><input data-k="monthsKept" inputmode="decimal" aria-label="Months of gifts a save adds"></span></div>
+      </div>
+      <div>
+        <h4>Strategic suppression</h4>
+        <div class="r"><span class="lab">Share of email sends suppressed</span><span class="pin s"><input data-k="supShare" inputmode="decimal" aria-label="Share of email sends suppressed"><span>%</span></span></div>
+        <div class="r"><span class="lab">Unsubscribes in those sends<span class="src">Measured: the costliest 20% of sends held 26%; also used for SMS</span></span><span class="pin s"><input data-k="supUnsub" inputmode="decimal" aria-label="Unsubscribes in those sends"><span>%</span></span></div>
+        <div class="r"><span class="lab">Email revenue in those sends<span class="src">Measured: the same 20% held 3% of gifts</span></span><span class="pin s"><input data-k="supRev" inputmode="decimal" aria-label="Revenue in those sends"><span>%</span></span></div>
+        <div class="r"><span class="lab">Emailed supporters who unsubscribe a month<span class="src">About 1 in 7 a year in our donor studies</span></span><span class="pin s"><input data-k="unsubRate" inputmode="decimal" aria-label="Monthly email unsubscribe rate"><span>%</span></span></div>
+        <div class="r"><span class="lab">Future giving per unsubscribe avoided<span class="src">Measured at $3 and $23 in our donor studies</span></span><span class="pin s"><span>$</span><input data-k="unsubValue" inputmode="decimal" aria-label="Future giving per unsubscribe avoided"></span></div>
+      </div>
+      <div>
+        <h4>SMS</h4>
+        <div class="r"><span class="lab">Texts per subscriber a month</span><span class="pin s"><input data-k="smsPerMo" inputmode="decimal" aria-label="Texts per subscriber a month"></span></div>
+        <div class="r"><span class="lab">Cost per text</span><span class="pin s"><span>$</span><input data-k="smsCost" inputmode="decimal" aria-label="Cost per text"></span></div>
+        <div class="r"><span class="lab">Share of texts suppressed<span class="src">Deeper than email, since every text has a price</span></span><span class="pin s"><input data-k="supShareSms" inputmode="decimal" aria-label="Share of texts suppressed"><span>%</span></span></div>
+        <div class="r"><span class="lab">SMS revenue in those texts<span class="src">We have measured out to a 30% cut (about 5% of response); 50% for 10% sits on the same curve</span></span><span class="pin s"><input data-k="supRevSms" inputmode="decimal" aria-label="SMS revenue in those texts"><span>%</span></span></div>
+        <div class="r"><span class="lab">Texted supporters who unsubscribe a month<span class="src">Set to the email rate</span></span><span class="pin s"><input data-k="smsUnsubRate" inputmode="decimal" aria-label="Monthly SMS unsubscribe rate"><span>%</span></span></div>
+        <h4>Capture and price</h4>
+        <div class="r"><span class="lab">Lower capture</span><span class="pin s"><input data-k="capLo" inputmode="decimal" aria-label="Lower capture"><span>%</span></span></div>
+        <div class="r"><span class="lab">Upper capture</span><span class="pin s"><input data-k="capHi" inputmode="decimal" aria-label="Upper capture"><span>%</span></span></div>
+        <div class="r"><span class="lab">Orchestrate per 1,000 records a month<span class="src">Records: emailed supporters plus texted supporters not on email</span></span><span class="pin s"><span>$</span><input data-k="price" inputmode="decimal" aria-label="Price per 1,000 records a month"></span></div>
+      </div>
+    </div>
+    <p class="fullval" id="fullVal"></p>
+  </details>
+</div></div>
+
+<section class="job" id="seen"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>What we've seen across our studies</h2></div>
+  <p class="sec-sub">Each study sizes the opportunity in the organization's own data, shown here at 25% to 50% capture. Clients are described by type and labeled A to C throughout the page.</p>
+  <div class="panel">
+    <table class="stable">
+      <thead><tr><th>Organization</th><th>Revenue lift</th><th>Value per year</th><th>Where most of it comes from</th></tr></thead>
+      <tbody>
+        <tr><td class="org"><span class="tag">Client A</span>National human-services nonprofit</td><td class="lift"><b>+8% to +46%</b></td><td class="val">$299K to $1.64M</td><td>Sending each donor the ask on the cause they care about</td></tr>
+        <tr><td class="org"><span class="tag">Client B</span>National advocacy nonprofit</td><td class="lift"><b>+7% to +21%</b></td><td class="val">$253K to $715K</td><td>Right-sized asks and topic routing</td></tr>
+        <tr><td class="org"><span class="tag">Client C</span>Regional environmental nonprofit</td><td class="lift"><b>+10% to +23%</b></td><td class="val">CA$23K to CA$52K</td><td>Asking the donors most likely to become sustainers first</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note accent"><b>The study pays for itself.</b> At Clients A and B, the changes the team could make on its own, with no Chorus subscription, were worth <span class="big">$124K to $482K a year</span></div>
+</div></section>
+
+<section class="job" id="patterns"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Patterns that show up in our studies</h2></div>
+  <p class="sec-sub">We've seen these across existing clients and expect to see them in future ones. How big each one is varies by organization, which is why every engagement starts with a study.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="chip">Topic affinity</span>
+      <h3>Supporters respond more when the ask is on their topic</h3>
+      <div class="stat"><b>1.6x to 2.2x</b><span>the gift rate when a donor's ask is aligned to their top topic</span></div>
+      <div class="seenat">Clients A and B</div>
+      <div class="bars" aria-hidden="true">
+        <div class="br"><span>Generic ask</span><span class="tk"><i class="g" style="width:45%"></i></span><span class="bv">1x</span></div>
+        <div class="br"><span>Aligned ask</span><span class="tk"><i style="width:100%"></i></span><span class="bv">1.6–2.2x</span></div>
+      </div>
+      <ul>
+        <li>Supporters who haven't given yet engage more with aligned emails: 8 points more opens at Client A, and 25 more clicks per 1,000 sends at Client C.</li>
+        <li>Framing counts too. At Client A, political framing was safe for politically engaged supporters and saw 29% more unsubscribes from everyone else.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <span class="chip">Ladder of engagement</span>
+      <h3>Interest fades fast, so timing matters</h3>
+      <div class="stat"><b>7.7x</b><span>as likely to give a first gift the month after a never-giver takes an action</span></div>
+      <div class="seenat">Client C</div>
+      <div class="split" aria-hidden="true"><div class="a" style="width:44%">0 to 60 days: +57% gifts</div><div class="b" style="width:56%">4 to 6 months: no lift</div></div>
+      <div class="chartcap">Gifts on asks tied to a topic the supporter engaged with, by how long ago, Client A</div>
+      <ul>
+        <li>At Client A, asks on a topic someone engaged with in the last 60 days saw 57% more gifts than asks on older interest.</li>
+        <li>At Client C, one-time donors were 3.1x as likely to start a sustainer plan in the 3 months after a gift.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <span class="chip">Unsubscribe risk</span>
+      <h3>A small part of the list drives most unsubscribes</h3>
+      <div class="stat"><b>85x to 163x</b><span>how much more often the riskiest tenth of a list unsubscribes than the safest tenth</span></div>
+      <div class="seenat">Clients A and B</div>
+      <div class="split" aria-hidden="true"><div class="a" style="width:85%">3 tenths of the list: 85% of unsubscribes</div><div class="b" style="width:15%">15%</div></div>
+      <div class="chartcap">Share of a month's unsubscribes, Client B</div>
+      <ul>
+        <li>At Clients A and B, 2 to 3 more supporters went inactive for every one who unsubscribed. Both are predictable from email behavior.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <span class="chip">Sustainers</span>
+      <h3>We can predict who becomes a sustainer, and who stops</h3>
+      <div class="stat"><b>17x</b><span>more sustainer plans started among the 5,000 supporters our score ranked highest than in a random 5,000</span></div>
+      <div class="seenat">Client C, six months of new plans</div>
+      <div class="bars" aria-hidden="true">
+        <div class="br"><span>Top 5,000 on the score</span><span class="tk"><i style="width:100%"></i></span><span class="bv">117</span></div>
+        <div class="br"><span>Random 5,000</span><span class="tk"><i class="g" style="width:6%"></i></span><span class="bv">7</span></div>
+      </div>
+      <ul>
+        <li>Email engagement signals who is about to stop. At Clients A and B, an unsubscribe went with 2.2x to 2.5x the chance a sustainer stops, and at Client A the risk rose as opens and clicks fell below that sustainer's normal.</li>
+      </ul>
+    </article>
+  </div>
+</div></section>
+
+<section class="job" id="depends"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Findings that depend on your organization</h2></div>
+  <p class="sec-sub">Copy, tone, and the shape of the ask mattered in every study, and what wins differs by organization. We recommend an A/B test first and leave these out of the ROI. The differences can be large.</p>
+  <div class="panel">
+    <span class="chip test">Test first, not counted in the ROI</span>
+    <div class="dlist">
+      <div><b>+271%</b><p>Gifts from $250+ donors on impact-math asks ("$1 provides...") compared with standard asks<em>Client A, year-end only, next to a match offer</em></p></div>
+      <div><b>2.4x</b><p>Gifts on asks at 1.5x to 2x the donor's last gift, against asks at 2x or more<em>Client B</em></p></div>
+      <div><b>+43–55%</b><p>Gifts in a randomized match test<em>Client A</em></p></div>
+      <div><b>1.8x</b><p>Actions on emails that name a specific place<em>Client C</em></p></div>
+      <div><b>+39%</b><p>Gifts from active donors on copy written to "you" instead of "we"<em>Client A</em></p></div>
+      <div><b>Fear vs. hope</b><p>Threat framing saw more gifts than solidarity framing<em>Client B</em></p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="job" id="interventions"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>How we put the patterns to work</h2></div>
+  <p class="sec-sub">Every organization is different. These are the interventions we run with clients today, and the three the calculator counts.</p>
+  <div class="ivs">
+    <article class="iv">
+      <div class="vis">
+        <h3>Topic routing</h3>
+        <p class="alt">Write a few more versions of the ask, and send each supporter the one closest to what they care about.</p>
+        <div class="bars" aria-hidden="true">
+          <div class="br"><span>Generic ask</span><span class="tk"><i class="g" style="width:45%"></i></span><span class="bv">1x</span></div>
+          <div class="br"><span>Ask on the donor's topic</span><span class="tk"><i style="width:100%"></i></span><span class="bv">1.6–2.2x</span></div>
+        </div>
+        <div class="live">In your calculator<strong id="ivTopic"></strong></div>
+      </div>
+      <div class="txt"><dl>
+        <dt>What it looks like</dt><dd>For tentpole moments like year-end and Giving Tuesday, the team writes 3 to 10 versions of the ask. Chorus splits the list so each supporter gets the closest one.</dd>
+        <dt>How we measure it</dt><dd>Increase in gift rate on the sends that use it, against a holdout that gets the standard ask.</dd>
+        <dt>Patterns it uses</dt><dd><div class="chips"><span>Topic affinity</span><span>Framing</span></div></dd>
+      </dl></div>
+    </article>
+    <article class="iv">
+      <div class="vis">
+        <h3>Strategic suppression</h3>
+        <p class="alt">Keep your own business rules, and hold back the people unlikely to give and likely to leave.</p>
+        <div class="bars" aria-hidden="true">
+          <div class="br"><span>Share of sends</span><span class="tk"><i style="width:77%"></i></span><span class="bv">20%</span></div>
+          <div class="br"><span>Share of unsubscribes</span><span class="tk"><i style="width:100%"></i></span><span class="bv">26%</span></div>
+          <div class="br"><span>Share of gifts</span><span class="tk"><i class="g" style="width:11.5%"></i></span><span class="bv">3%</span></div>
+        </div>
+        <div class="chartcap">The costliest 20% of sends at Client B</div>
+        <div class="live">In your calculator, email and SMS<strong id="ivSup"></strong></div>
+      </div>
+      <div class="txt"><dl>
+        <dt>What it looks like</dt><dd>For any send, you choose the audience with your own rules. Chorus returns a suppression file. List health improves right away, and over time you keep a larger list and more future gifts.</dd>
+        <dt>How we measure it</dt><dd>Unsubscribes avoided, valued at the future giving each supporter would have brought in. On SMS we also count the money saved by sending fewer texts.</dd>
+        <dt>SMS: fewer texts, lower cost</dt><dd id="smsLine"></dd>
+        <dt>Patterns it uses</dt><dd><div class="chips"><span>Unsubscribe risk</span><span>Ladder of engagement</span><span>Topic affinity</span></div></dd>
+        <dt>What an unsubscribe is worth</dt><dd>We find out in the study. Here is email and SMS suppression at three values, using your numbers.
+          <table class="uv" id="uvTable"><thead><tr><th>Per unsubscribe</th><th>25% capture</th><th>50% capture</th></tr></thead><tbody></tbody></table>
+        </dd>
+      </dl></div>
+    </article>
+    <article class="iv">
+      <div class="vis">
+        <h3>Sustainer saves and upgrades</h3>
+        <p class="alt">Reach sustainers before the gift stops, and ask the one-time donors most likely to become sustainers.</p>
+        <div class="funnel" aria-label="Sustainer saves, using your numbers">
+          <div class="fs"><span class="fb" id="f1"></span><span>stops a year</span></div>
+          <div class="fs"><span class="fb" id="f2"></span><span>flagged ahead</span></div>
+          <div class="fs"><span class="fb" id="f3"></span><span>saved</span></div>
+        </div>
+        <div class="live">In your calculator, saves only<strong id="ivSust"></strong></div>
+      </div>
+      <div class="txt"><dl>
+        <dt>What it looks like</dt><dd>Each week Chorus flags sustainers whose email engagement is slipping, so the team can reach out before the gift stops.</dd>
+        <dt>Upgrades</dt><dd>Chorus ranks one-time donors by how likely they are to start a sustainer plan, and the sustainer ask goes to them first.</dd>
+        <dt>How we measure it</dt><dd>Plans still active 3 and 6 months later, and new plans started, each against a holdout.</dd>
+        <dt>Patterns it uses</dt><dd><div class="chips"><span>Sustainers</span><span>Unsubscribe risk</span><span>Ladder of engagement</span></div></dd>
+      </dl></div>
+    </article>
+  </div>
+</div></section>
+
+<section class="job" id="how"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>How an engagement works</h2></div>
+  <div class="steps">
+    <div class="card"><span class="chip">Step 1</span><h3>Study</h3><p>Every program is different. The study finds which of these patterns matter most in your data and sizes each one.</p></div>
+    <div class="card"><span class="chip">Step 2</span><h3>Pilot</h3><p>We run the top intervention against a holdout for one to two months, so you see your own lift before you commit.</p></div>
+    <div class="card"><span class="chip">Step 3</span><h3>Orchestrate</h3><p>We add the top interventions one at a time so your team isn't overwhelmed. $10 per 1,000 supporter records a month, across email, SMS, and other channels.</p></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p>Figures come from Chorus audience studies completed in 2026, with clients described by type. Findings are associations measured on each organization's historical sends, except the match test, which was randomized. Client C's figures are in Canadian dollars. The calculator is an estimate for planning; a study replaces each default with values measured in your own data.</p>
+  <div class="ctas"><a class="cta" href="mailto:sam@chorusai.co">Email sam@chorusai.co</a><button class="cta ghost" type="button" id="copyEmail">Copy email</button></div>
+</div></footer>
+
+<script>
+(function(){
+  var D = {email:750000, sms:250000, overlap:40, revEmail:4000000, revSms:1000000, sust:30000, gift:30,
+    topicLift:20, supShare:20, supUnsub:26, supRev:3, unsubRate:1.2, unsubValue:10,
+    smsPerMo:6, smsCost:0.03, smsUnsubRate:1.2, supShareSms:50, supRevSms:10, stopRate:25, flagged:34, saveRate:10, monthsKept:18,
+    capLo:25, capHi:50, price:10};
+  var S = Object.assign({}, D);
+  var DEC = {overlap:1, gift:2, topicLift:1, supShare:1, supUnsub:1, supRev:1, unsubRate:2, unsubValue:2,
+    smsPerMo:1, smsCost:3, smsUnsubRate:2, supShareSms:1, supRevSms:1, stopRate:1, flagged:1, saveRate:1, monthsKept:1, capLo:1, capHi:1, price:2};
+  var inputs = Array.prototype.slice.call(document.querySelectorAll('input[data-k]'));
+  function $(id){ return document.getElementById(id); }
+  function fmtInput(k, v){ return DEC[k] !== undefined ? String(+v.toFixed(DEC[k])) : Math.round(v).toLocaleString('en-US'); }
+  function parse(s){ var n = parseFloat(String(s).replace(/[^0-9.\-]/g,'')); return isFinite(n) ? n : 0; }
+  function money(v){
+    var a = Math.abs(v), s = v < 0 ? '-$' : '$';
+    if (a >= 1e6) return s + (a/1e6).toFixed(a >= 1e7 ? 1 : 2).replace(/\.?0+$/,'') + 'M';
+    if (a >= 1e3) return s + Math.round(a/1e3).toLocaleString('en-US') + 'K';
+    return s + Math.round(a).toLocaleString('en-US');
+  }
+  function count(v){ return v >= 1e6 ? (v/1e6).toFixed(2).replace(/\.?0+$/,'') + 'M' : v >= 1e4 ? Math.round(v/1e3) + 'K' : Math.round(v).toLocaleString('en-US'); }
+  function mult(v){ return (v >= 10 ? Math.round(v) : v.toFixed(1)) + 'x'; }
+
+  // Strategic suppression, per channel, at a given value per unsubscribe avoided
+  function emailSupAt(v){ return S.email * S.unsubRate/100 * 12 * S.supUnsub/100 * v - S.revEmail * S.supRev/100; }
+  function smsTextsCut(){ return S.sms * S.smsPerMo * 12 * S.supShareSms/100; }
+  function smsSupAt(v){
+    return S.sms * S.smsUnsubRate/100 * 12 * S.supUnsub/100 * v + smsTextsCut() * S.smsCost - S.revSms * S.supRevSms/100;
+  }
+
+  function calc(){
+    var topic = S.topicLift/100 * (S.revEmail + S.revSms);
+    var emailSup = emailSupAt(S.unsubValue), smsSup = smsSupAt(S.unsubValue);
+    var sust = S.sust * S.stopRate/100 * S.flagged/100 * S.saveRate/100 * S.monthsKept * S.gift;
+    var full = topic + emailSup + smsSup + sust;
+    var records = S.email + S.sms * (1 - S.overlap/100);
+    return {topic:topic, emailSup:emailSup, smsSup:smsSup, sust:sust, full:full,
+      lo:full*S.capLo/100, hi:full*S.capHi/100, records:records, cost:records/1000*S.price*12};
+  }
+  function setW(el, pct){ el.style.width = Math.max(0, Math.min(100, pct)) + '%'; }
+  function render(){
+    var r = calc(), lo = S.capLo/100, hi = S.capHi/100;
+    var a = r.cost > 0 ? r.lo/r.cost : 0, b = r.cost > 0 ? r.hi/r.cost : 0;
+    $('roi').textContent = r.cost > 0 ? mult(a) + ' to ' + mult(b) : 'Add your list';
+    $('roiLine').textContent = r.cost > 0 ? 'Every $1 spent on Chorus comes back as $' + a.toFixed(2) + ' to $' + b.toFixed(2) + '.' : 'Enter how many supporters you email or text to see the return.';
+    var top = Math.max(r.cost, r.lo, r.hi, 1);
+    $('costL').textContent = money(r.cost) + ' a year';
+    $('loL').textContent = money(r.lo) + ' a year';
+    $('hiL').textContent = money(r.hi) + ' a year';
+    setW($('costB'), r.cost/top*100); setW($('loB'), r.lo/top*100); setW($('hiB'), r.hi/top*100);
+    $('net').innerHTML = 'After Chorus’s cost: <b>' + money(r.lo - r.cost) + ' to ' + money(r.hi - r.cost) + ' a year</b>';
+    var parts = ['topic','emailSup','smsSup','sust'];
+    var mx = Math.max.apply(null, parts.map(function(p){ return Math.abs(r[p]) * hi; }).concat([1]));
+    parts.forEach(function(p){
+      var el = $('bd-'+p);
+      el.querySelector('.v').textContent = money(r[p]*lo) + ' to ' + money(r[p]*hi);
+      el.classList.toggle('neg', r[p] < 0);
+      setW(el.querySelector('.mini i'), Math.abs(r[p]*hi)/mx*100);
+    });
+    var saved = smsTextsCut() * S.smsCost;
+    $('smsSrc').textContent = 'Includes ' + money(saved) + ' a year in texts not sent, before capture';
+    $('costNote').textContent = count(r.records) + ' supporter records (emailed supporters plus texted supporters not on email) at $' + (+S.price.toFixed(2)) + ' per 1,000 a month.';
+    $('ivTopic').textContent = money(r.topic*lo) + ' to ' + money(r.topic*hi);
+    var sup = r.emailSup + r.smsSup;
+    $('ivSup').textContent = money(sup*lo) + ' to ' + money(sup*hi);
+    $('ivSust').textContent = money(r.sust*lo) + ' to ' + money(r.sust*hi);
+    $('smsLine').textContent = 'Suppressing ' + S.supShareSms + '% of texts cuts ' + count(smsTextsCut()) + ' texts a year and saves ' +
+      money(saved) + ' in sending costs, while keeping ' + (100 - S.supRevSms) + '% of SMS revenue. Fewer unsubscribes come on top.';
+    var stops = S.sust * S.stopRate/100, flg = stops * S.flagged/100, sv = flg * S.saveRate/100, fmax = Math.max(stops, 1);
+    [['f1', stops], ['f2', flg], ['f3', sv]].forEach(function(f){ var el = $(f[0]); el.textContent = count(f[1]); el.style.width = 'calc(' + Math.max(18, f[1]/fmax*100) + '% - 96px)'; });
+    $('fullVal').textContent = 'At 100% capture the full value would be ' + money(r.full) + ' a year.';
+    var rows = '';
+    [5, 15, 25].forEach(function(v){ var x = emailSupAt(v) + smsSupAt(v); rows += '<tr><td>$' + v + '</td><td>' + money(x*lo) + '</td><td>' + money(x*hi) + '</td></tr>'; });
+    $('uvTable').querySelector('tbody').innerHTML = rows;
+  }
+  function fill(){ inputs.forEach(function(el){ el.value = fmtInput(el.dataset.k, S[el.dataset.k]); }); }
+  inputs.forEach(function(el){
+    el.addEventListener('input', function(){ S[el.dataset.k] = parse(el.value); render(); });
+    el.addEventListener('blur', function(){ el.value = fmtInput(el.dataset.k, S[el.dataset.k]); });
+  });
+  $('reset').addEventListener('click', function(){ S = Object.assign({}, D); fill(); render(); });
+  var root = document.documentElement, tb = $('themeBtn');
+  tb.addEventListener('click', function(){
+    var dark = root.getAttribute('data-theme') !== 'dark';
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    tb.textContent = dark ? '◑ Light' : '◐ Dark';
+  });
+  var cb = $('copyEmail');
+  cb.addEventListener('click', function(){
+    var done = function(){ cb.textContent = 'Copied'; setTimeout(function(){ cb.textContent = 'Copy email'; }, 1600); };
+    try { navigator.clipboard.writeText('sam@chorusai.co').then(done, function(){ cb.textContent = 'sam@chorusai.co'; }); }
+    catch (e) { cb.textContent = 'sam@chorusai.co'; }
+  });
+  fill(); render();
+})();
+</script>
+</body>
+</html>
