@@ -346,7 +346,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       <div>
         <h4>Strategic suppression</h4>
         <div class="r"><span class="lab">Share of email sends suppressed</span><span class="pin s"><input data-k="supShare" inputmode="decimal" aria-label="Share of email sends suppressed"><span>%</span></span></div>
-        <div class="r"><span class="lab">Unsubscribes in those sends<span class="src">Measured: the costliest 20% of sends held 26%; also used for SMS</span></span><span class="pin s"><input data-k="supUnsub" inputmode="decimal" aria-label="Unsubscribes in those sends"><span>%</span></span></div>
+        <div class="r"><span class="lab">Unsubscribes in those sends<span class="src">Measured: the costliest 20% of sends held 26%</span></span><span class="pin s"><input data-k="supUnsub" inputmode="decimal" aria-label="Unsubscribes in those sends"><span>%</span></span></div>
         <div class="r"><span class="lab">Email revenue in those sends<span class="src">Measured: the same 20% held 3% of gifts</span></span><span class="pin s"><input data-k="supRev" inputmode="decimal" aria-label="Revenue in those sends"><span>%</span></span></div>
         <div class="r"><span class="lab">Emailed supporters who unsubscribe a month<span class="src">About 1 in 7 a year in our donor studies</span></span><span class="pin s"><input data-k="unsubRate" inputmode="decimal" aria-label="Monthly email unsubscribe rate"><span>%</span></span></div>
         <div class="r"><span class="lab">Future giving per unsubscribe avoided<span class="src">Measured at $3 and $23 in our donor studies</span></span><span class="pin s"><span>$</span><input data-k="unsubValue" inputmode="decimal" aria-label="Future giving per unsubscribe avoided"></span></div>
@@ -355,7 +355,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
         <h4>SMS</h4>
         <div class="r"><span class="lab">Texts per subscriber a month</span><span class="pin s"><input data-k="smsPerMo" inputmode="decimal" aria-label="Texts per subscriber a month"></span></div>
         <div class="r"><span class="lab">Cost per text</span><span class="pin s"><span>$</span><input data-k="smsCost" inputmode="decimal" aria-label="Cost per text"></span></div>
-        <div class="r"><span class="lab">Share of texts suppressed<span class="src">Deeper than email, since every text has a price</span></span><span class="pin s"><input data-k="supShareSms" inputmode="decimal" aria-label="Share of texts suppressed"><span>%</span></span></div>
+        <div class="r"><span class="lab">Share of texts suppressed<span class="src" id="smsDepthSrc">Deeper than email, since every text has a price</span></span><span class="pin s"><input data-k="supShareSms" inputmode="decimal" aria-label="Share of texts suppressed"><span>%</span></span></div>
         <div class="r"><span class="lab">SMS revenue in those texts<span class="src">We have measured out to a 30% cut (about 5% of response); 50% for 10% sits on the same curve</span></span><span class="pin s"><input data-k="supRevSms" inputmode="decimal" aria-label="SMS revenue in those texts"><span>%</span></span></div>
         <div class="r"><span class="lab">Texted supporters who unsubscribe a month<span class="src">Set to the email rate</span></span><span class="pin s"><input data-k="smsUnsubRate" inputmode="decimal" aria-label="Monthly SMS unsubscribe rate"><span>%</span></span></div>
         <h4>Capture and price</h4>
@@ -559,8 +559,15 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
   // Strategic suppression, per channel, at a given value per unsubscribe avoided
   function emailSupAt(v){ return S.email * S.unsubRate/100 * 12 * S.supUnsub/100 * v - S.revEmail * S.supRev/100; }
   function smsTextsCut(){ return S.sms * S.smsPerMo * 12 * S.supShareSms/100; }
+  // Share of SMS unsubscribes in the suppressed texts: the measured email curve carried out to the SMS cut.
+  // Sends are ranked by risk, so the curve bends upward and this straight line is a floor.
+  function smsUnsubShare(){
+    var d = S.supShareSms/100, s = S.supShare/100, u = S.supUnsub/100;
+    if (d <= s) return s > 0 ? d * u/s : 0;
+    return Math.min(1, u + (d - s) * (1 - u)/(1 - s));
+  }
   function smsSupAt(v){
-    return S.sms * S.smsUnsubRate/100 * 12 * S.supUnsub/100 * v + smsTextsCut() * S.smsCost - S.revSms * S.supRevSms/100;
+    return S.sms * S.smsUnsubRate/100 * 12 * smsUnsubShare() * v + smsTextsCut() * S.smsCost - S.revSms * S.supRevSms/100;
   }
 
   function calc(){
@@ -593,7 +600,8 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       setW(el.querySelector('.mini i'), Math.abs(r[p]*hi)/mx*100);
     });
     var saved = smsTextsCut() * S.smsCost;
-    $('smsSrc').textContent = 'Includes ' + money(saved) + ' a year in texts not sent, before capture';
+    $('smsSrc').textContent = 'Includes ' + money(saved*lo) + ' to ' + money(saved*hi) + ' in cost savings from texts not sent';
+    $('smsDepthSrc').textContent = 'Deeper than email, since every text has a price. These texts hold at least ' + Math.round(smsUnsubShare()*100) + '% of SMS unsubscribes, on the email curve';
     $('costNote').textContent = count(r.records) + ' supporter records (emailed supporters plus texted supporters not on email) at $' + (+S.price.toFixed(2)) + ' per 1,000 a month.';
     $('ivTopic').textContent = money(r.topic*lo) + ' to ' + money(r.topic*hi);
     var sup = r.emailSup + r.smsSup;
