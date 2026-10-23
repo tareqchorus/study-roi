@@ -168,6 +168,12 @@ details.adv summary:hover{color:var(--accent)}
 .bd .mini{grid-column:1/-1;height:5px;border-radius:3px;background:var(--grid);overflow:hidden}
 .bd .mini i{display:block;height:100%;background:var(--v4-primary);border-radius:3px;transition:width .35s ease}
 .bd.neg .v{color:var(--v4-state-error)}
+.bd{position:relative}
+.info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-left:6px;vertical-align:1px;border-radius:50%;border:1px solid var(--v4-border);background:transparent;color:var(--v4-text-4);font:600 10px/1 inherit;font-style:normal;cursor:pointer;padding:0}
+.info:hover,.bd.open .info{color:var(--accent);border-color:var(--v4-purple-25);background:var(--v4-purple-12)}
+.tip{display:none;position:absolute;left:0;bottom:calc(100% - 4px);z-index:6;width:min(330px,100%);padding:10px 12px;border:1px solid var(--v4-border);border-radius:10px;background:var(--v4-surface-2);box-shadow:0 8px 24px rgba(0,0,0,.12);font-size:12.5px;line-height:1.5;color:var(--v4-text-2)}
+.bd.open .tip,.bd:has(.info:focus-visible) .tip{display:block}
+@media(hover:hover){.bd:has(.info:hover) .tip{display:block}}
 .fine{font-size:12px;color:var(--v4-text-3);margin-top:10px;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.fill,.bd .mini i{transition:none}}
 
@@ -322,10 +328,14 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       </div>
       <p class="net" id="net"></p>
       <div class="breakdown">
-        <div class="bd" id="bd-topic"><span class="nm">Topic routing</span><span class="v"></span><span class="mini"><i></i></span></div>
-        <div class="bd" id="bd-emailSup"><span class="nm">Strategic suppression, email</span><span class="v"></span><span class="mini"><i></i></span></div>
-        <div class="bd" id="bd-smsSup"><span class="nm">Strategic suppression, SMS<small id="smsSrc"></small></span><span class="v"></span><span class="mini"><i></i></span></div>
-        <div class="bd" id="bd-sust"><span class="nm">Sustainer saves</span><span class="v"></span><span class="mini"><i></i></span></div>
+        <div class="bd" id="bd-topic"><span class="nm">Topic routing<button class="info" type="button" aria-label="About topic routing" aria-expanded="false" aria-describedby="tip-topic">i</button></span><span class="v"></span><span class="mini"><i></i></span>
+          <span class="tip" role="tooltip" id="tip-topic"></span></div>
+        <div class="bd" id="bd-emailSup"><span class="nm">Strategic suppression, email<button class="info" type="button" aria-label="About strategic suppression, email" aria-expanded="false" aria-describedby="tip-emailSup">i</button></span><span class="v"></span><span class="mini"><i></i></span>
+          <span class="tip" role="tooltip" id="tip-emailSup"></span></div>
+        <div class="bd" id="bd-smsSup"><span class="nm">Strategic suppression, SMS<button class="info" type="button" aria-label="About strategic suppression, SMS" aria-expanded="false" aria-describedby="tip-smsSup">i</button><small id="smsSrc"></small></span><span class="v"></span><span class="mini"><i></i></span>
+          <span class="tip" role="tooltip" id="tip-smsSup"></span></div>
+        <div class="bd" id="bd-sust"><span class="nm">Sustainer saves<button class="info" type="button" aria-label="About sustainer saves" aria-expanded="false" aria-describedby="tip-sust">i</button></span><span class="v"></span><span class="mini"><i></i></span>
+          <span class="tip" role="tooltip" id="tip-sust"></span></div>
       </div>
       <p class="fine" id="costNote"></p>
     </div>
@@ -361,7 +371,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
         <div class="r"><span class="lab">Texts per subscriber a month</span><span class="pin s"><input data-k="smsPerMo" inputmode="decimal" aria-label="Texts per subscriber a month"></span></div>
         <div class="r"><span class="lab">Cost per text</span><span class="pin s"><span>$</span><input data-k="smsCost" inputmode="decimal" aria-label="Cost per text"></span></div>
         <div class="r"><span class="lab">Share of texts suppressed<span class="src" id="smsDepthSrc">Deeper than email, since every text has a price</span></span><span class="pin s"><input data-k="supShareSms" inputmode="decimal" aria-label="Share of texts suppressed"><span>%</span></span></div>
-        <div class="r"><span class="lab">SMS revenue in those texts<span class="src">We have measured out to a 30% cut (about 5% of response); 50% for 10% sits on the same curve</span></span><span class="pin s"><input data-k="supRevSms" inputmode="decimal" aria-label="SMS revenue in those texts"><span>%</span></span></div>
+        <div class="r"><span class="lab">SMS revenue in those texts<span class="src">Assumed. At Client B, the top tenth on our gift score held about half of SMS gift dollars</span></span><span class="pin s"><input data-k="supRevSms" inputmode="decimal" aria-label="SMS revenue in those texts"><span>%</span></span></div>
         <div class="r"><span class="lab">Texted supporters who unsubscribe a month<span class="src">Set to the email rate</span></span><span class="pin s"><input data-k="smsUnsubRate" inputmode="decimal" aria-label="Monthly SMS unsubscribe rate"><span>%</span></span></div>
         <h4>Capture and price</h4>
         <div class="r"><span class="lab">Lower capture</span><span class="pin s"><input data-k="capLo" inputmode="decimal" aria-label="Lower capture"><span>%</span></span></div>
@@ -638,6 +648,17 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
     });
     var saved = smsTextsCut() * S.smsCost;
     $('smsSrc').textContent = 'Includes ' + money(saved*lo) + ' to ' + money(saved*hi) + ' in cost savings from texts not sent, at ' + (+(S.smsCost*100).toFixed(2)) + '¢ a text';
+    // Each bar's tooltip: what it is, its share of email and SMS fundraising, and what we saw at a client
+    var tot = S.revEmail + S.revSms;
+    function pct(v){ return (Math.abs(v) >= 10 ? Math.round(v) : +v.toFixed(1)) + '%'; }
+    function worth(p){ return tot > 0 ? 'That’s like raising ' + pct(r[p]*lo/tot*100) + ' to ' + pct(r[p]*hi/tot*100) + ' more by email and SMS. ' : ''; }
+    var tips = {
+      topic: 'Send each supporter the version of the ask closest to what they care about. ' + worth('topic') + 'Our donor studies put the full opportunity at 19% to 62% of email fundraising.',
+      emailSup: 'Hold back emails from the people unlikely to give and likely to unsubscribe. ' + worth('emailSup') + 'At Clients A and B, the riskiest tenth of the list unsubscribed 85x to 163x as often as the safest.',
+      smsSup: 'Hold back texts from the people unlikely to give and likely to reply STOP. Every text you don’t send also saves its cost. ' + worth('smsSup') + 'At Client B, people who had never given got 70% of the texts and sent 87% of the STOP replies.',
+      sust: 'Reach sustainers before their monthly gift stops. ' + worth('sust') + 'At Clients A and B, sustainers who unsubscribed from email were 2.2x to 2.5x as likely to stop giving.'
+    };
+    parts.forEach(function(p){ $('tip-'+p).textContent = tips[p]; });
     $('smsDepthSrc').textContent = 'Deeper than email, since every text has a price. These texts hold at least ' + Math.round(smsUnsubShare()*100) + '% of SMS unsubscribes, on the email curve';
     $('costNote').innerHTML = count(r.records) + ' supporter records (emailed supporters plus texted supporters not on email) at $' + (+S.price.toFixed(2)) + ' per 1,000 a month. The study is priced separately; <a href="#study">see what it returns</a>.';
     ['A','B'].forEach(function(c){ $('st'+c).textContent = S.studyPrice > 0 ? mult(STUDY[c][0]/S.studyPrice) + ' to ' + mult(STUDY[c][1]/S.studyPrice) : 'Add a price'; });
@@ -660,6 +681,16 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
     el.addEventListener('blur', function(){ el.value = fmtInput(el.dataset.k, S[el.dataset.k]); });
   });
   $('reset').addEventListener('click', function(){ S = Object.assign({}, D); fill(); render(); });
+  // Bar tooltips: hover on desktop (CSS), tap or click to pin, Escape or a click elsewhere to close
+  var bds = Array.prototype.slice.call(document.querySelectorAll('.bd'));
+  function closeTips(except){ bds.forEach(function(b){ if (b === except) return; b.classList.remove('open'); var i = b.querySelector('.info'); if (i) i.setAttribute('aria-expanded', 'false'); }); }
+  bds.forEach(function(b){
+    var btn = b.querySelector('.info'); if (!btn) return;
+    btn.addEventListener('click', function(e){ e.stopPropagation(); var open = !b.classList.contains('open'); closeTips(b); b.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); });
+  });
+  // pointerdown, not click: iOS Safari sends no click for taps on plain page areas
+  document.addEventListener('pointerdown', function(e){ if (!e.target.closest('.tip, .info')) closeTips(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeTips(); });
   var root = document.documentElement, tb = $('themeBtn');
   tb.addEventListener('click', function(){
     var dark = root.getAttribute('data-theme') !== 'dark';
