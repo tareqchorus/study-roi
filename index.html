@@ -128,6 +128,9 @@ details.adv summary:hover{color:var(--accent)}
 .note b{color:var(--v4-text-1)}
 .note p+p{margin-top:6px}
 .note.accent{border-color:var(--v4-purple-25);background:var(--v4-purple-12)}
+.sprice{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:560px;margin-bottom:18px}
+.sprice label{font-size:14px;font-weight:600;color:var(--v4-text-1)}
+.sprice label small{display:block;font-size:12px;font-weight:400;color:var(--v4-text-3);margin-top:2px}
 .note .big{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;color:var(--accent);margin:4px 0 2px}
 
 /* calculator (hero) */
@@ -286,7 +289,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
 <header class="top"><div class="wrap">
   <div class="brand"><span class="dot"></span> Chorus</div>
   <nav class="nav" aria-label="Sections">
-    <a href="#calculator">Calculator</a><a href="#seen">Our studies</a><a href="#patterns">Patterns</a><a href="#interventions">Interventions</a><a href="#how">How it works</a>
+    <a href="#calculator">Calculator</a><a href="#seen">Our studies</a><a href="#study">The study</a><a href="#patterns">Patterns</a><a href="#interventions">Interventions</a><a href="#how">How it works</a>
   </nav>
   <button class="toggle" id="themeBtn" type="button">◐ Dark</button>
 </div></header>
@@ -298,7 +301,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
   <div class="calc" id="calculator">
     <div class="inputs">
       <h2>Your program</h2>
-      <p class="cap">The calculator opens on an example program. Replace each number with yours.</p>
+      <p class="cap">Replace the sample values below with your own organization's numbers.</p>
       <div class="field"><label for="i-email">Supporters emailed in a typical month<small>Unique people, not total sends</small></label><span class="pin"><input id="i-email" data-k="email" inputmode="decimal"></span></div>
       <div class="field"><label for="i-sms">Supporters texted in a typical month</label><span class="pin"><input id="i-sms" data-k="sms" inputmode="decimal"></span></div>
       <div class="field"><label for="i-overlap">Texted supporters also on your email list</label><span class="pin s"><input id="i-overlap" data-k="overlap" inputmode="decimal"><span>%</span></span></div>
@@ -306,14 +309,14 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       <div class="field"><label for="i-revSms">SMS fundraising revenue per year</label><span class="pin"><span>$</span><input id="i-revSms" data-k="revSms" inputmode="decimal"></span></div>
       <div class="field"><label for="i-sust">Active sustainers</label><span class="pin"><input id="i-sust" data-k="sust" inputmode="decimal"></span></div>
       <div class="field"><label for="i-gift">Average sustainer gift per month</label><span class="pin s"><span>$</span><input id="i-gift" data-k="gift" inputmode="decimal"></span></div>
-      <button class="linkbtn" type="button" id="reset">Reset to the example program</button>
+      <button class="linkbtn" type="button" id="reset">Reset to the sample values</button>
     </div>
     <div class="results" aria-live="polite">
-      <div class="ret-label">Return on Chorus, per year</div>
+      <div class="ret-label">Return on one year of Chorus Orchestrate</div>
       <div class="ret" id="roi"></div>
       <p class="ret-line" id="roiLine"></p>
       <div class="pbars">
-        <div class="pb"><div class="pl"><b>Chorus Orchestrate</b><span id="costL"></span></div><div class="trk"><div class="fill cost" id="costB"></div></div></div>
+        <div class="pb"><div class="pl"><b>Chorus Orchestrate subscription</b><span id="costL"></span></div><div class="trk"><div class="fill cost" id="costB"></div></div></div>
         <div class="pb"><div class="pl"><b>Value if you capture 25%</b><span id="loL"></span></div><div class="trk"><div class="fill lo" id="loB"></div></div></div>
         <div class="pb"><div class="pl"><b>Value if you capture 50%</b><span id="hiL"></span></div><div class="trk"><div class="fill hi" id="hiB"></div></div></div>
       </div>
@@ -328,8 +331,10 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
     </div>
   </div>
   <div class="note">
-    <p><b>How we count this.</b> We assume you capture 25% to 50% of the value we calculate. Some of the gap is operational, since teams roll changes out over months. Some reflects that program and mission goals can matter more than immediate revenue or list health. Figures are an annual run rate once the interventions are live; year one runs lower while the pilot is in market.</p>
-    <p><b>Not included: direct mail.</b> Strategic suppression works the same way in direct mail, and each piece not sent saves printing and postage. We left it out of this calculator.</p>
+    <p><b>How we count this.</b> The value we calculate is what topic routing, strategic suppression, and sustainer saves would be worth if every send used them. We size each one from patterns in our past studies and apply it to your numbers. These are opportunities we calculated. A pilot measures the actual lift in your program.</p>
+    <p>No program captures all of it. Mission messages and legal or operational notices go to everyone, whatever the response. Some weeks there's nothing new on a supporter's top topic. Teams roll changes out over months, and the model can't see everything your team knows. We assume you capture 25% to 50%.</p>
+    <p><b>When the value arrives.</b> Topic routing raises gifts in the same year. Strategic suppression and sustainer saves also count future giving, from supporters who stay on your list and sustainer gifts that keep coming after a save. Figures are a yearly run rate once the interventions are live; year one runs lower while the pilot is in market.</p>
+    <p><b>Not included: direct mail and ads.</b> Strategic suppression works the same way in direct mail, and each piece not sent saves printing and postage. In ads, the same scores point spend at the people most likely to respond, so the same budget brings in more. We left both out of this calculator.</p>
   </div>
   <details class="adv">
     <summary>Advanced: change the assumptions</summary>
@@ -381,11 +386,41 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       </tbody>
     </table>
   </div>
-  <div class="note accent"><b>The study pays for itself.</b> At Clients A and B, the changes the team could make on its own, with no Chorus subscription, were worth <span class="big">$124K to $482K a year</span></div>
 </div></section>
 
+<section class="job" id="study"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The study pays for itself</h2></div>
+  <p class="sec-sub">A study gives you a picture of your audience you can act on immediately, whether or not you go further. At our two national clients, the changes the team could make on its own were worth several times the study price each year.</p>
+  <div class="panel sprice">
+    <label for="i-studyPrice">Study price<small>Change it if your price is different</small></label>
+    <span class="pin"><span>$</span><input id="i-studyPrice" data-k="studyPrice" inputmode="decimal"></span>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <span class="chip">Client A</span>
+      <h3>National human-services nonprofit</h3>
+      <div class="stat"><b id="stA"></b><span>a year's value against the study price</span></div>
+      <div class="seenat">$124K to $247K a year at 25% to 50% capture</div>
+      <ul>
+        <li>Don't go silent after someone gives.</li>
+        <li>Keep political asks off low-engaged supporters.</li>
+        <li>Spell out what a gift pays for ("$1 provides...").</li>
+        <li>Write to "you" instead of "we" for active donors.</li>      </ul>
+    </article>
+    <article class="card">
+      <span class="chip">Client B</span>
+      <h3>National advocacy nonprofit</h3>
+      <div class="stat"><b id="stB"></b><span>a year's value against the study price</span></div>
+      <div class="seenat">$162K to $482K a year at 25% to 50% capture</div>
+      <ul>
+        <li>Match the ask to the donor's last gift. Asking for much more brought in fewer gifts, and asking for less didn't make gifts smaller.</li>
+        <li>When you ask for money, talk about your impact and mission. Save specific fights for asks to take action.</li>
+        <li>Lead with the threat. Emails about what's at risk brought in more gifts than emails about standing together.</li>      </ul>
+    </article>
+  </div></div></section>
+
 <section class="job" id="patterns"><div class="wrap">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Patterns that show up in our studies</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Patterns that show up in our studies</h2></div>
   <p class="sec-sub">We've seen these across existing clients and expect to see them in future ones. How big each one is varies by organization, which is why every engagement starts with a study.</p>
   <div class="grid">
     <article class="card">
@@ -442,7 +477,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
 </div></section>
 
 <section class="job" id="depends"><div class="wrap">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Findings that depend on your organization</h2></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Findings that depend on your organization</h2></div>
   <p class="sec-sub">Copy, tone, and the shape of the ask mattered in every study, and what wins differs by organization. We recommend an A/B test first and leave these out of the ROI. The differences can be large.</p>
   <div class="panel">
     <span class="chip test">Test first, not counted in the ROI</span>
@@ -458,7 +493,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
 </div></section>
 
 <section class="job" id="interventions"><div class="wrap">
-  <div class="sec-head"><span class="sec-num">04</span><h2>How we put the patterns to work</h2></div>
+  <div class="sec-head"><span class="sec-num">05</span><h2>How we put the patterns to work</h2></div>
   <p class="sec-sub">Every organization is different. These are the interventions we run with clients today, and the three the calculator counts.</p>
   <div class="ivs">
     <article class="iv">
@@ -521,7 +556,7 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
 </div></section>
 
 <section class="job" id="how"><div class="wrap">
-  <div class="sec-head"><span class="sec-num">05</span><h2>How an engagement works</h2></div>
+  <div class="sec-head"><span class="sec-num">06</span><h2>How an engagement works</h2></div>
   <div class="steps">
     <div class="card"><span class="chip">Step 1</span><h3>Study</h3><p>Every program is different. The study finds which of these patterns matter most in your data and sizes each one.</p></div>
     <div class="card"><span class="chip">Step 2</span><h3>Pilot</h3><p>We run the top intervention against a holdout for one to two months, so you see your own lift before you commit.</p></div>
@@ -539,7 +574,9 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
   var D = {email:750000, sms:250000, overlap:40, revEmail:4000000, revSms:1000000, sust:30000, gift:30,
     topicLift:20, supShare:20, supUnsub:26, supRev:3, unsubRate:1.2, unsubValue:10,
     smsPerMo:6, smsCost:0.03, smsUnsubRate:1.2, supShareSms:50, supRevSms:10, stopRate:25, flagged:34, saveRate:10, monthsKept:18,
-    capLo:25, capHi:50, price:10};
+    capLo:25, capHi:50, price:10, studyPrice:25000};
+  // Study-only value at 25% and 50% capture: the changes each study said to make right away (Client A: two routing fixes; Client B: ask cap and general-fund default)
+  var STUDY = {A:[123704, 247408], B:[162434, 482066]};
   var S = Object.assign({}, D);
   var DEC = {overlap:1, gift:2, topicLift:1, supShare:1, supUnsub:1, supRev:1, unsubRate:2, unsubValue:2,
     smsPerMo:1, smsCost:3, smsUnsubRate:2, supShareSms:1, supRevSms:1, stopRate:1, flagged:1, saveRate:1, monthsKept:1, capLo:1, capHi:1, price:2};
@@ -584,13 +621,13 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
     var r = calc(), lo = S.capLo/100, hi = S.capHi/100;
     var a = r.cost > 0 ? r.lo/r.cost : 0, b = r.cost > 0 ? r.hi/r.cost : 0;
     $('roi').textContent = r.cost > 0 ? mult(a) + ' to ' + mult(b) : 'Add your list';
-    $('roiLine').textContent = r.cost > 0 ? 'Every $1 spent on Chorus comes back as $' + a.toFixed(2) + ' to $' + b.toFixed(2) + '.' : 'Enter how many supporters you email or text to see the return.';
+    $('roiLine').textContent = r.cost > 0 ? 'Every $1 spent on a year of Orchestrate comes back as $' + a.toFixed(2) + ' to $' + b.toFixed(2) + ', counting future giving.' : 'Enter how many supporters you email or text to see the return.';
     var top = Math.max(r.cost, r.lo, r.hi, 1);
     $('costL').textContent = money(r.cost) + ' a year';
     $('loL').textContent = money(r.lo) + ' a year';
     $('hiL').textContent = money(r.hi) + ' a year';
     setW($('costB'), r.cost/top*100); setW($('loB'), r.lo/top*100); setW($('hiB'), r.hi/top*100);
-    $('net').innerHTML = 'After Chorus’s cost: <b>' + money(r.lo - r.cost) + ' to ' + money(r.hi - r.cost) + ' a year</b>';
+    $('net').innerHTML = 'After the subscription cost: <b>' + money(r.lo - r.cost) + ' to ' + money(r.hi - r.cost) + ' a year</b>';
     var parts = ['topic','emailSup','smsSup','sust'];
     var mx = Math.max.apply(null, parts.map(function(p){ return Math.abs(r[p]) * hi; }).concat([1]));
     parts.forEach(function(p){
@@ -600,9 +637,10 @@ footer p{color:var(--v4-text-3);font-size:12.5px;line-height:1.65;max-width:78ch
       setW(el.querySelector('.mini i'), Math.abs(r[p]*hi)/mx*100);
     });
     var saved = smsTextsCut() * S.smsCost;
-    $('smsSrc').textContent = 'Includes ' + money(saved*lo) + ' to ' + money(saved*hi) + ' in cost savings from texts not sent';
+    $('smsSrc').textContent = 'Includes ' + money(saved*lo) + ' to ' + money(saved*hi) + ' in cost savings from texts not sent, at ' + (+(S.smsCost*100).toFixed(2)) + '¢ a text';
     $('smsDepthSrc').textContent = 'Deeper than email, since every text has a price. These texts hold at least ' + Math.round(smsUnsubShare()*100) + '% of SMS unsubscribes, on the email curve';
-    $('costNote').textContent = count(r.records) + ' supporter records (emailed supporters plus texted supporters not on email) at $' + (+S.price.toFixed(2)) + ' per 1,000 a month.';
+    $('costNote').innerHTML = count(r.records) + ' supporter records (emailed supporters plus texted supporters not on email) at $' + (+S.price.toFixed(2)) + ' per 1,000 a month. The study is priced separately; <a href="#study">see what it returns</a>.';
+    ['A','B'].forEach(function(c){ $('st'+c).textContent = S.studyPrice > 0 ? mult(STUDY[c][0]/S.studyPrice) + ' to ' + mult(STUDY[c][1]/S.studyPrice) : 'Add a price'; });
     $('ivTopic').textContent = money(r.topic*lo) + ' to ' + money(r.topic*hi);
     var sup = r.emailSup + r.smsSup;
     $('ivSup').textContent = money(sup*lo) + ' to ' + money(sup*hi);
